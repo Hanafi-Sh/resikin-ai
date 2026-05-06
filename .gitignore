@@ -1,0 +1,32 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+.venv/
+venv/
+
+# Model files (too large for git, use Git LFS or download separately)
+models/*.pth
+models/*.pt
+!models/.gitkeep
+
+# Dataset (download via Roboflow API)
+data/raw/
+data/train/
+data/val/
+data/test/
+data/processed/
+!data/.gitkeep
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
