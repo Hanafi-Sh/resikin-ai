@@ -90,12 +90,12 @@ python -m uvicorn app.main:app --host 0.0.0.0 --port 8001
 
 ### 3. Endpoint API
 
-#### `POST /predict` (Base64)
+#### `POST /api/ai/validate-image` (Base64)
 Mengirimkan gambar dalam format JSON base64. Cocok untuk integrasi bot.
 
 **Input:** `{"image": "data:image/jpeg;base64,..."}`
 
-#### `POST /predict-file` (File Upload)
+#### `POST /api/ai/validate-image-file` (File Upload)
 Mengunggah file gambar secara langsung menggunakan `multipart/form-data`. **Sangat direkomendasikan untuk pengujian via Postman.**
 
 **Body (form-data):**
@@ -104,11 +104,11 @@ Mengunggah file gambar secara langsung menggunakan `multipart/form-data`. **Sang
 #### Tes dengan cURL:
 ```bash
 # Menggunakan File Upload
-curl -X POST "http://localhost:8001/predict-file" \
+curl -X POST "http://localhost:8001/api/ai/validate-image-file" \
   -F "file=@path/ke/gambar.jpg"
 
 # Menggunakan Base64
-curl -X POST "http://localhost:8001/predict" \
+curl -X POST "http://localhost:8001/api/ai/validate-image" \
   -H "Content-Type: application/json" \
   -d '{"image": "BASE64_STRING"}'
 ```

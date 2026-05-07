@@ -204,6 +204,9 @@ Model yang telah di-*fine-tune* di-*deploy* sebagai REST API menggunakan **FastA
 
 **Endpoint API:**
 
+| Method | Path                            | Deskripsi                     |
+|--------|---------------------------------|-------------------------------|
+| GET    | `/health`                       | Cek status server             |
 | POST   | `/api/ai/validate-image`        | Validasi foto (Base64 JSON)   |
 | POST   | `/api/ai/validate-image-file`   | Validasi foto (Direct Upload) |
 
