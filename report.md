@@ -143,10 +143,10 @@ Tidak seluruh parameter CLIP dilatih ulang. Hanya layer-layer berikut yang di-*u
 | Komponen yang Dilatih         | Jumlah Parameter |
 |-------------------------------|------------------|
 | Vision Encoder Layer 10 & 11  | ~14 juta         |
-| Text Encoder Layer 10 & 11    | ~14 juta         |
+| Text Encoder Layer 10 & 11    | ~7 juta          |
 | Visual Projection Layer       | ~0.4 juta        |
 | Text Projection Layer         | ~0.4 juta        |
-| **Total Trainable**           | **~28.8 juta (19.1% dari total)** |
+| **Total Trainable**           | **~21.1 juta (14.0% dari total)** |
 
 Seluruh layer lain (Layer 0–9) dibekukan (*frozen*) agar model tidak kehilangan kemampuan generalisasi yang telah dipelajari saat *pre-training*.
 
@@ -255,7 +255,7 @@ Berikut adalah grafik *training loss* dan *accuracy* selama 10 epoch pelatihan:
 **Analisis:**
 - **Training Loss** menurun secara konsisten dari 0.883 (epoch 1) hingga 0.004 (epoch 10), menunjukkan model berhasil mempelajari pola pada data training.
 - **Training Accuracy** meningkat dari 55.7% (epoch 1) hingga 100% (epoch 6–10).
-- **Validation Accuracy** stabil di kisaran 85.7%–89.3%, menunjukkan model tidak mengalami *overfitting* yang parah meskipun training accuracy mencapai 100%.
+- **Validation Accuracy** stabil di kisaran 82.1%–89.3%, menunjukkan model tidak mengalami *overfitting* yang parah meskipun training accuracy mencapai 100%.
 
 ### 3.2 Metrik Evaluasi (Test Set)
 
