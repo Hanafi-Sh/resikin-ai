@@ -104,7 +104,22 @@ Endpoint utama untuk integrasi dengan Bot Telegram atau Web Apps.
   }
   ```
 
-### 2. Validasi Gambar (File Upload)
+### 2. Rekomendasi Petugas (Assignment)
+Digunakan untuk mencari petugas yang paling cocok (beban kerja terendah) untuk menangani laporan tertentu.
+- **Method**: `POST`
+- **Endpoint**: `/api/ai/recommend-assignment`
+- **Body**:
+  ```json
+  {
+    "report_id": "uuid-laporan",
+    "category": "sampah_liar",
+    "petugas_list": [{"id": "p1", "name": "Agus"}, {"id": "p2", "name": "Budi"}],
+    "active_assignments": [{"petugas_id": "p1", "status": "dalam_proses"}]
+  }
+  ```
+- **Response**: `{"success": true, "recommended_petugas_id": "p2", "reason": "..."}`
+
+### 3. Validasi Gambar (File Upload)
 Gunakan ini untuk pengujian langsung tanpa perlu konversi base64.
 - **Method**: `POST`
 - **Endpoint**: `/api/ai/validate-image-file`
