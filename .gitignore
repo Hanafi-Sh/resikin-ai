@@ -7,15 +7,15 @@ __pycache__/
 venv/
 
 # Model files (too large for git, use Git LFS or download separately)
-models/*.pth
-models/*.pt
+models/
+*.zip
 !models/.gitkeep
 
 # Dataset (download via Roboflow API)
 data/raw/
-data/train/
-data/val/
-data/test/
+data/train_data/
+data/val_data/
+data/test_data/
 data/processed/
 !data/.gitkeep
 

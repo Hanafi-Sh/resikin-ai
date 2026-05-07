@@ -57,9 +57,9 @@ resikin-waste-classifier/
 ├── requirements-train.txt
 ├── data/
 │   ├── raw/
-│   ├── train/
-│   ├── val/
-│   └── test/
+│   ├── train_data/
+│   ├── val_data/
+│   └── test_data/
 ├── models/
 │   └── clip_waste_classifier.pth
 ├── src/
@@ -70,7 +70,9 @@ resikin-waste-classifier/
 │   │   └── evaluate.py
 │   └── utils/
 ├── app/
-│   └── main.py
+│   ├── main.py
+│   ├── inference.py
+│   └── schemas.py
 ├── notebooks/
 ├── scripts/
 │   └── train.py

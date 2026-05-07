@@ -36,6 +36,19 @@ Oleh karena itu, dibutuhkan sebuah **sistem AI** yang dapat secara otomatis memv
 
 ### 2.1 Diagram Alur Pipeline AI
 
+```mermaid
+graph LR
+    A[1. Data Acquisition<br/>Roboflow] --> B[2. Preprocessing<br/>Auto-Split 80/10/10]
+    B --> C[3. Modeling<br/>CLIP Fine-Tuning]
+    C --> D[4. Evaluation<br/>Accuracy & F1]
+    D --> E[5. Export<br/>Model .pth]
+    E --> F[6. API Deployment<br/>FastAPI & VPS]
+    F --> G[7. Integration<br/>Telegram Bot]
+    
+    style C fill:#f9f,stroke:#333,stroke-width:2px
+    style F fill:#bbf,stroke:#333,stroke-width:2px
+```
+
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                        PIPELINE AI RESIKIN                              │
@@ -79,7 +92,7 @@ dataset = version.download("folder")
 ```
 
 **Splitting Data:**
-Karena dataset dari Roboflow tidak selalu memiliki split *validation* dan *test*, saya membuat script otomatis (`src/preprocessing/prepare_dataset.py`) yang melakukan pembagian data secara otomatis dengan rasio **80% train / 10% validation / 10% test**. Script ini menggunakan *random shuffle* untuk memastikan distribusi yang merata antar kelas.
+Karena dataset dari Roboflow tidak selalu memiliki split *validation* dan *test*, saya membuat script otomatis (`src/preprocessing/prepare_dataset.py`) yang melakukan pembagian data secara otomatis dengan rasio **80% train / 10% validation / 10% test**. Sesuai standar penugasan, data disimpan dalam folder `data/train_data`, `data/val_data`, dan `data/test_data`. Script ini menggunakan *random shuffle* untuk memastikan distribusi yang merata antar kelas.
 
 **Statistik Dataset:**
 
@@ -206,13 +219,19 @@ Model yang telah di-*fine-tune* di-*deploy* sebagai REST API menggunakan **FastA
 
 | Method | Path                            | Deskripsi                     |
 |--------|---------------------------------|-------------------------------|
+| POST   | `/predict`                      | **Endpoint Utama (Tugas)**    |
 | GET    | `/health`                       | Cek status server             |
 | POST   | `/api/ai/validate-image`        | Validasi foto (Base64 JSON)   |
 | POST   | `/api/ai/validate-image-file`   | Validasi foto (Direct Upload) |
 
 **Contoh Request:**
 ```bash
-# Metode 1: Base64
+# Endpoint Utama (Sesuai Standar Penugasan)
+curl -X POST "http://tencent-vps.hanavy.online:8001/predict" \
+  -H "Content-Type: application/json" \
+  -d '{"image": "BASE64_STRING"}'
+
+# Integrasi Bot
 curl -X POST "http://tencent-vps.hanavy.online:8001/api/ai/validate-image" \
   -H "Content-Type: application/json" \
   -d '{"image": "BASE64_STRING"}'
@@ -335,9 +354,9 @@ resikin-waste-classifier/
 │
 ├── data/
 │   ├── raw/                           # Data mentah dari Roboflow
-│   ├── train/                         # Data training (80%)
-│   ├── val/                           # Data validation (10%)
-│   └── test/                          # Data testing (10%)
+│   ├── train_data/                    # Data training (80%)
+│   ├── val_data/                      # Data validation (10%)
+│   └── test_data/                     # Data testing (10%)
 │
 ├── models/
 │   └── clip_waste_classifier.pth      # Model fine-tuned (~600MB)
@@ -351,7 +370,9 @@ resikin-waste-classifier/
 │   └── utils/
 │
 ├── app/
-│   └── main.py                        # FastAPI entry point + inference
+│   ├── main.py                        # FastAPI entry point
+│   ├── inference.py                   # Load model & prediction logic
+│   └── schemas.py                     # Request/Response schemas
 │
 ├── notebooks/
 │   ├── training.ipynb                 # Notebook training (Google Colab)

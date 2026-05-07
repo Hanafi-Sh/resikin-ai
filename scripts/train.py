@@ -191,9 +191,9 @@ def main(args):
     ]
 
     # Datasets
-    train_ds = WasteDataset(os.path.join(args.data_dir, "train"), processor, "train")
-    val_ds = WasteDataset(os.path.join(args.data_dir, "val"), processor, "val")
-    test_ds = WasteDataset(os.path.join(args.data_dir, "test"), processor, "test")
+    train_ds = WasteDataset(os.path.join(args.data_dir, "train_data"), processor, "train")
+    val_ds = WasteDataset(os.path.join(args.data_dir, "val_data"), processor, "val")
+    test_ds = WasteDataset(os.path.join(args.data_dir, "test_data"), processor, "test")
 
     train_loader = DataLoader(train_ds, batch_size=args.batch_size, shuffle=True,
                               collate_fn=lambda b: (list(zip(*b))[0], torch.tensor(list(zip(*b))[1])))

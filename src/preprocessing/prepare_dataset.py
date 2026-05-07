@@ -17,7 +17,7 @@ def organize_roboflow_dataset(roboflow_dir: str, output_dir: str):
     Script ini memastikan struktur folder sesuai kebutuhan training.
     Jika valid/test tidak ada, script akan otomatis membagi data train (80/10/10).
     """
-    splits = {"train": "train", "valid": "val", "test": "test"}
+    splits = {"train": "train_data", "valid": "val_data", "test": "test_data"}
     has_valid_or_test = os.path.exists(os.path.join(roboflow_dir, "valid")) or os.path.exists(os.path.join(roboflow_dir, "test"))
     
     if not has_valid_or_test:
@@ -47,9 +47,9 @@ def organize_roboflow_dataset(roboflow_dir: str, output_dir: str):
                 n_test = int(n_total * 0.1)
                 
                 splits_data = {
-                    "train": images[n_val + n_test:],
-                    "val": images[:n_val],
-                    "test": images[n_val:n_val + n_test]
+                    "train_data": images[n_val + n_test:],
+                    "val_data": images[:n_val],
+                    "test_data": images[n_val:n_val + n_test]
                 }
                 
                 for target_split, split_imgs in splits_data.items():
@@ -78,7 +78,7 @@ def print_stats(data_dir: str):
     """Print statistik dataset."""
     print("\n📊 Dataset Statistics:")
     print("-" * 40)
-    for split in ["train", "val", "test"]:
+    for split in ["train_data", "val_data", "test_data"]:
         split_dir = os.path.join(data_dir, split)
         if not os.path.exists(split_dir):
             continue
