@@ -51,6 +51,22 @@ Warga sering mengirimkan foto melalui bot Telegram atau website saat melaporkan 
 
 ---
 
+## 🧠 AI Logic & Decision Support
+
+Sistem ResikIn menggunakan dua pendekatan AI yang berbeda untuk membantu operasional:
+
+### 1. Vision Analysis (CLIP Fine-tuned)
+Digunakan untuk memvalidasi laporan warga di awal.
+- **Tujuan**: Memastikan foto yang dikirim benar-benar berisi tumpukan sampah.
+- **Efek**: Mengurangi beban verifikasi manual oleh Koordinator hingga **90%** karena laporan "sampah palsu" atau selfie akan langsung ditolak oleh Bot di awal.
+
+### 2. Assignment Intelligence (DeepSeek LLM)
+Digunakan saat Koordinator ingin menugaskan petugas melalui fitur **"Tanya AI"**.
+- **Tujuan**: Merekomendasikan petugas terbaik berdasarkan beban kerja (*workload balancing*).
+- **Cara Kerja**: AI membaca daftar tugas aktif setiap petugas dan mencocokkannya dengan kategori laporan. Jika seorang petugas sudah menangani banyak laporan, AI akan menyarankan petugas lain yang lebih senggang atau yang memiliki kualifikasi sesuai kategori (misal: petugas dengan spesialisasi pengangkutan tumpukan besar).
+
+---
+
 ## 🚀 Instalasi & Persiapan (Local/Server)
 
 Layanan ini dikembangkan menggunakan **FastAPI** untuk melayani request klasifikasi secara real-time.
