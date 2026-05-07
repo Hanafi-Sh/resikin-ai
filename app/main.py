@@ -8,7 +8,7 @@ import os
 import base64
 import logging
 import torch
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from PIL import Image
@@ -84,24 +84,9 @@ class PredictResponse(BaseModel):
     detail: dict
 
 
-@app.get("/health")
-def health():
-    return {"status": "ok", "model_loaded": model is not None}
-
-
-@app.post("/predict", response_model=PredictResponse)
-async def predict(request: PredictRequest):
+def _get_prediction(image: Image.Image) -> PredictResponse:
     if not model or not processor:
         raise HTTPException(status_code=503, detail="Model not available")
-
-    # Decode image
-    try:
-        b64 = request.image
-        if "," in b64:
-            b64 = b64.split(",")[1]
-        image = Image.open(io.BytesIO(base64.b64decode(b64))).convert("RGB")
-    except Exception:
-        raise HTTPException(status_code=400, detail="Invalid image format")
 
     # Step 1: Binary classification (waste vs not_waste)
     with torch.no_grad():
@@ -144,6 +129,37 @@ async def predict(request: PredictRequest):
             "subcategories": sub_detail,
         },
     )
+
+
+@app.get("/health")
+def health():
+    return {"status": "ok", "model_loaded": model is not None}
+
+
+@app.post("/predict", response_model=PredictResponse)
+async def predict(request: PredictRequest):
+    # Decode base64 image
+    try:
+        b64 = request.image
+        if "," in b64:
+            b64 = b64.split(",")[1]
+        image = Image.open(io.BytesIO(base64.b64decode(b64))).convert("RGB")
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid base64 image")
+
+    return _get_prediction(image)
+
+
+@app.post("/predict-file", response_model=PredictResponse)
+async def predict_file(file: UploadFile = File(...)):
+    # Load image from file upload
+    try:
+        image_bytes = await file.read()
+        image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid image file")
+
+    return _get_prediction(image)
 
 
 if __name__ == "__main__":
