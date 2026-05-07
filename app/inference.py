@@ -83,10 +83,16 @@ def get_prediction(image: Image.Image) -> PredictResponse:
         top_sub_label = SUBCATEGORY_LABELS[top_sub_idx]
         suggested_category = SUBCATEGORY_MAP[top_sub_label]
 
+    if is_waste:
+        message = "Foto terdeteksi sebagai sampah. Silakan lanjutkan pelaporan."
+    else:
+        message = "Sistem mendeteksi bahwa foto ini kemungkinan bukan sampah. Apakah Anda tetap ingin melanjutkan pelaporan?"
+
     return PredictResponse(
         success=True,
         is_waste=is_waste,
         confidence=round(confidence, 4),
+        message=message,
         suggested_category=suggested_category,
         detail={
             "waste_prob": round(probs[0].item(), 4),
