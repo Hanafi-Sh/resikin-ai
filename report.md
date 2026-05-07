@@ -204,16 +204,19 @@ Model yang telah di-*fine-tune* di-*deploy* sebagai REST API menggunakan **FastA
 
 **Endpoint API:**
 
-| Method | Path                       | Deskripsi                     |
-|--------|----------------------------|-------------------------------|
-| GET    | `/health`                  | Cek status server             |
-| POST   | `/api/ai/validate-image`   | Validasi foto sampah          |
+| POST   | `/api/ai/validate-image`        | Validasi foto (Base64 JSON)   |
+| POST   | `/api/ai/validate-image-file`   | Validasi foto (Direct Upload) |
 
 **Contoh Request:**
 ```bash
+# Metode 1: Base64
 curl -X POST "http://tencent-vps.hanavy.online:8001/api/ai/validate-image" \
   -H "Content-Type: application/json" \
-  -d '{"image": "BASE64_ENCODED_IMAGE_STRING"}'
+  -d '{"image": "BASE64_STRING"}'
+
+# Metode 2: Direct File Upload (Recommended for Postman)
+curl -X POST "http://tencent-vps.hanavy.online:8001/api/ai/validate-image-file" \
+  -F "file=@path/ke/gambar.jpg"
 ```
 
 **Contoh Response:**
@@ -300,7 +303,7 @@ Berikut contoh hasil inferensi model pada gambar nyata:
 
 ### 4.1 Kesimpulan
 
-1. Model AI berbasis **CLIP ViT-B/32** berhasil di-*fine-tune* menggunakan teknik *Contrastive Fine-Tuning* untuk mengklasifikasikan foto sampah vs bukan sampah dengan **validation accuracy sebesar 85.7%–89.3%**.
+1. Model AI berbasis **CLIP ViT-B/32** berhasil di-*fine-tune* menggunakan teknik *Contrastive Fine-Tuning* untuk mengklasifikasikan foto sampah vs bukan sampah dengan **akurasi pengujian (Test Set) mencapai 96.43%**.
 2. Pipeline AI telah dibangun secara end-to-end, mulai dari *data acquisition* (Roboflow API), *preprocessing* (auto-split 80/10/10), *training* (Google Colab GPU), hingga *deployment* (FastAPI pada VPS self-hosted).
 3. Model berhasil di-*deploy* ke VPS cloud (Tencent Cloud) dan terintegrasi dengan bot Telegram ResikIn. Endpoint API dapat diakses secara publik melalui `http://tencent-vps.hanavy.online:8001/api/ai/validate-image`.
 4. Dalam pengujian nyata, model mampu membedakan foto sampah dan foto tidak relevan (selfie, makanan, dll) dengan baik.

@@ -136,7 +136,7 @@ def health():
     return {"status": "ok", "model_loaded": model is not None}
 
 
-@app.post("/predict", response_model=PredictResponse)
+@app.post("/api/ai/validate-image", response_model=PredictResponse)
 async def predict(request: PredictRequest):
     # Decode base64 image
     try:
@@ -150,7 +150,7 @@ async def predict(request: PredictRequest):
     return _get_prediction(image)
 
 
-@app.post("/predict-file", response_model=PredictResponse)
+@app.post("/api/ai/validate-image-file", response_model=PredictResponse)
 async def predict_file(file: UploadFile = File(...)):
     # Load image from file upload
     try:
