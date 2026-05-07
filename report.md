@@ -251,13 +251,17 @@ Berikut adalah grafik *training loss* dan *accuracy* selama 10 epoch pelatihan:
 - **Training Accuracy** meningkat dari 55.7% (epoch 1) hingga 100% (epoch 6–10).
 - **Validation Accuracy** stabil di kisaran 85.7%–89.3%, menunjukkan model tidak mengalami *overfitting* yang parah meskipun training accuracy mencapai 100%.
 
-### 3.2 Metrik Evaluasi
+### 3.2 Metrik Evaluasi (Test Set)
 
-| Metrik              | Nilai    |
-|---------------------|----------|
-| **Best Val Acc**    | **89.3%** |
-| **Final Val Acc**   | **85.7%** |
-| **Final Train Acc** | **100%**  |
+Evaluasi akhir dilakukan pada **Test Set** yang belum pernah dilihat oleh model sebelumnya:
+
+| Metrik              | Nilai      |
+|---------------------|------------|
+| **Test Accuracy**   | **96.43%** |
+| Precision (Waste)   | 92.3%      |
+| Recall (Waste)      | 100.0%     |
+| F1-Score (Waste)    | 96.0%      |
+| F1-Score (Not Waste)| 96.7%      |
 
 ### 3.3 Training History (Per Epoch)
 
