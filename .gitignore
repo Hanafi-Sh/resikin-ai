@@ -6,17 +6,13 @@ __pycache__/
 .venv/
 venv/
 
-# Model files (too large for git, use Git LFS or download separately)
+# Model weights and Large files
 models/
-*.zip
 !models/.gitkeep
 
-# Dataset (download via Roboflow API)
-data/raw/
-data/train_data/
-data/val_data/
-data/test_data/
-data/processed/
+# Datasets
+data/
+!data/**/.gitkeep
 !data/.gitkeep
 
 # IDE

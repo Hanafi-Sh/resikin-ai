@@ -8,6 +8,8 @@ Warga sering mengirimkan foto melalui bot Telegram atau website saat melaporkan 
 1. **Memvalidasi** apakah foto yang dikirim benar-benar berisi sampah (bukan selfie, makanan, dll)
 2. **Mengkategorikan** jenis permasalahan sampah (TPS penuh, sampah liar, tidak terangkut)
 
+---
+
 ## 🏗️ Arsitektur
 
 ```
@@ -47,73 +49,93 @@ Warga sering mengirimkan foto melalui bot Telegram atau website saat melaporkan 
         └───────────────┘
 ```
 
-## 📁 Struktur Folder
+---
 
-```
-resikin-waste-classifier/
-├── README.md
-├── report.pdf
-├── requirements.txt
-├── requirements-train.txt
-├── data/
-│   ├── raw/
-│   ├── train_data/
-│   ├── val_data/
-│   └── test_data/
-├── models/
-│   └── clip_waste_classifier.pth
-├── src/
-│   ├── preprocessing/
-│   │   └── prepare_dataset.py
-│   ├── training/
-│   ├── evaluation/
-│   │   └── evaluate.py
-│   └── utils/
-├── app/
-│   ├── main.py
-│   ├── inference.py
-│   └── schemas.py
-├── notebooks/
-├── scripts/
-│   └── train.py
-```
+## 🚀 Instalasi & Persiapan (Local/Server)
 
-## 🚀 Cara Menjalankan API
+Layanan ini dikembangkan menggunakan **FastAPI** untuk melayani request klasifikasi secara real-time.
 
-### 1. Install Dependencies
+### 1. Persiapan Environment
 ```bash
+# Clone repository (jika belum)
+git clone https://github.com/Hanafi-Sh/resikin-ai.git
+cd resikin-waste-classifier
+
+# Buat virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-### 2. Jalankan Server
+### 2. Menjalankan AI Service
 ```bash
-python -m uvicorn app.main:app --host 0.0.0.0 --port 8001
+# Menjalankan server pada port 8001
+export MODEL_PATH="models/clip_waste_classifier.pth"
+uvicorn app.main:app --host 0.0.0.0 --port 8001
 ```
 
-### 3. Endpoint API
+---
 
-#### `POST /predict` (Standar Penugasan)
-Endpoint utama yang mematuhi standar input/output penugasan DSAI (menerima JSON dengan field `image` berisi Base64).
+## 🌐 Dokumentasi API (Integrasi Server)
 
-**Input:** `{"image": "BASE64_STRING"}`
+### 1. Validasi Gambar (Base64)
+Endpoint utama untuk integrasi dengan Bot Telegram atau Web Apps.
+- **Method**: `POST`
+- **Endpoint**: `/api/ai/validate-image`
+- **Body**: `{"image": "data:image/jpeg;base64,..."}`
 
-#### `POST /api/ai/validate-image` (Integrasi Bot)
-Alias untuk mengirimkan gambar dalam format JSON base64. Cocok untuk integrasi bot.
+### 2. Validasi Gambar (File Upload)
+Gunakan ini untuk pengujian langsung tanpa perlu konversi base64.
+- **Method**: `POST`
+- **Endpoint**: `/api/ai/validate-image-file`
+- **Form Data**: `file=@sampah.jpg`
 
-#### `POST /api/ai/validate-image-file` (File Upload)
-Mengunggah file gambar secara langsung menggunakan `multipart/form-data`. **Sangat direkomendasikan untuk pengujian manual via Postman.**
+### 3. Predict Alias (DSAI Standard)
+Alias untuk mematuhi format penugasan standar.
+- **Method**: `POST`
+- **Endpoint**: `/predict`
+- **Body**: `{"image": "BASE64_STRING"}`
 
-#### Tes dengan cURL:
-```bash
-# Endpoint Utama (Sesuai contoh di dokumen tugas)
-curl -X POST "http://localhost:8001/predict" \
-  -H "Content-Type: application/json" \
-  -d '{"image": "BASE64_STRING"}'
+---
 
-# Menggunakan File Upload
-curl -X POST "http://localhost:8001/api/ai/validate-image-file" \
-  -F "file=@path/ke/gambar.jpg"
+## 📮 Pengujian via Postman
+
+Anda dapat menguji API ini secara visual menggunakan Postman:
+
+### A. Menggunakan Base64
+1. Pilih method **POST**.
+2. URL: `http://43.156.249.230:8001/api/ai/validate-image`
+3. Tab **Body** > **raw** > **JSON**.
+4. Masukkan: `{"image": "iVBORw0KGgoAAAANSUhEUgAAAAE..."}`
+
+### B. Menggunakan Upload File
+1. Pilih method **POST**.
+2. URL: `http://43.156.249.230:8001/api/ai/validate-image-file`
+3. Tab **Body** > **form-data**.
+4. Key: `file` (ubah tipe ke **File**), Value: Pilih gambar dari PC Anda.
+
+---
+
+## 💻 Contoh Integrasi (Python)
+
+```python
+import requests
+import base64
+
+def check_waste(image_path):
+    with open(image_path, "rb") as f:
+        img_b64 = base64.b64encode(f.read()).decode("utf-8")
+    
+    url = "http://43.156.249.230:8001/api/ai/validate-image"
+    payload = {"image": img_b64}
+    
+    response = requests.post(url, json=payload)
+    return response.json()
 ```
+
+---
 
 ## 📊 Hasil Evaluasi
 
@@ -127,13 +149,7 @@ Model di-fine-tune selama 10 epoch di Google Colab (GPU T4) dan dievaluasi pada 
 | F1-Score (Waste) | 96.0% |
 | F1-Score (Not Waste) | 96.7% |
 
-## 🔧 Training
-
-Training dilakukan di Google Colab (GPU T4) menggunakan contrastive fine-tuning:
-
-```bash
-python scripts/train.py --data_dir ./data --epochs 10 --batch_size 32 --lr 1e-5
-```
+---
 
 ## 📝 Lisensi
 
