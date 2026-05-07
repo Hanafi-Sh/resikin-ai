@@ -128,13 +128,14 @@ curl -X POST "http://localhost:8001/predict" \
 
 ## 📊 Hasil Evaluasi
 
-*(Akan diisi setelah training selesai)*
+Model di-fine-tune selama 10 epoch di Google Colab (GPU T4):
 
 | Metric | Score |
 |---|---|
-| Accuracy | - |
-| F1-Score (waste) | - |
-| F1-Score (not_waste) | - |
+| Train Accuracy (final) | 100% |
+| Validation Accuracy (best) | 89.3% |
+| Validation Accuracy (final) | 85.7% |
+| Train Loss (final) | 0.004 |
 
 ## 🔧 Training
 
