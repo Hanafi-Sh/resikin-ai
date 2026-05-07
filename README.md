@@ -20,7 +20,7 @@ Warga sering mengirimkan foto melalui bot Telegram atau website saat melaporkan 
 ┌──────────────┐     ┌──────────────┐
 │ CLIP Vision  │     │  CLIP Text   │
 │   Encoder    │     │   Encoder    │
-│ (ViT-B/32)  │     │ (Transformer)│
+│ (ViT-B/32)   │     │ (Transformer)│
 │  Fine-tuned  │     │  Fine-tuned  │
 └──────┬───────┘     └──────┬───────┘
        │                    │

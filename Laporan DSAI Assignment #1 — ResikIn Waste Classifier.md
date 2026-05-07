@@ -53,11 +53,13 @@ Dataset berisi gambar-gambar yang terbagi dalam dua kategori utama:
 
 **Proses Pengambilan Data:** Dataset diunduh secara otomatis menggunakan Roboflow Python SDK di dalam Google Colab notebook (`notebooks/training.ipynb`):
 
+```python
 from roboflow import Roboflow  
-rf \= Roboflow(api\_key\="YOUR\_API\_KEY")  
-project \= rf.workspace("project-ia-andzk").project("classification-image-6zihm")  
-version \= project.version(2)  
-dataset \= version.download("folder")
+rf = Roboflow(api_key="YOUR_API_KEY")  
+project = rf.workspace("project-ia-andzk").project("classification-image-6zihm")  
+version = project.version(2)  
+dataset = version.download("folder")
+```
 
 **Splitting Data:** Karena dataset dari Roboflow tidak selalu memiliki split *validation* dan *test*, saya membuat script otomatis (`src/preprocessing/prepare_dataset.py`) yang melakukan pembagian data secara otomatis dengan rasio **80% train / 10% validation / 10% test**. Script ini menggunakan *random shuffle* untuk memastikan distribusi yang merata antar kelas.
 
