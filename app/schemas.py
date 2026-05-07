@@ -8,6 +8,5 @@ class PredictResponse(BaseModel):
     success: bool
     is_waste: bool
     confidence: float
-    message: str
     suggested_category: Optional[str] = None
     detail: Dict
