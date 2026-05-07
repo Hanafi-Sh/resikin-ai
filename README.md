@@ -85,12 +85,44 @@ Endpoint utama untuk integrasi dengan Bot Telegram atau Web Apps.
 - **Method**: `POST`
 - **Endpoint**: `/api/ai/validate-image`
 - **Body**: `{"image": "data:image/jpeg;base64,..."}`
+- **Contoh Response (Waste)**:
+  ```json
+  {
+    "success": true,
+    "is_waste": true,
+    "confidence": 0.9852,
+    "suggested_category": "tps_penuh",
+    "detail": {
+      "waste_prob": 0.9852,
+      "not_waste_prob": 0.0148,
+      "subcategories": {
+        "tps_penuh": 0.921,
+        "sampah_liar": 0.052,
+        "tidak_terangkut": 0.027
+      }
+    }
+  }
+  ```
 
 ### 2. Validasi Gambar (File Upload)
 Gunakan ini untuk pengujian langsung tanpa perlu konversi base64.
 - **Method**: `POST`
 - **Endpoint**: `/api/ai/validate-image-file`
 - **Form Data**: `file=@sampah.jpg`
+- **Contoh Response (Bukan Sampah)**:
+  ```json
+  {
+    "success": true,
+    "is_waste": false,
+    "confidence": 0.9912,
+    "suggested_category": null,
+    "detail": {
+      "waste_prob": 0.0088,
+      "not_waste_prob": 0.9912,
+      "subcategories": {}
+    }
+  }
+  ```
 
 ### 3. Predict Alias (DSAI Standard)
 Alias untuk mematuhi format penugasan standar.
